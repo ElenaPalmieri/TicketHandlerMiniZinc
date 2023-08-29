@@ -19,11 +19,18 @@ constraint forall(i in 1..N)(sum([X[i,j]*TT[j] | j in 1..M]) <= 8);
 % If a ticket is handled by one agent, it should not be handled by others.
 constraint forall(j in 1..M)(sum([X[i,j] | i in 1..N]) <= 1);
 
-% The number of tickets handled should be balanced among the agents.
-% Introducing a new variable K that can assume any integer value in the interval going from 0 to the result of the division of the number of tasks by the number of agents
-var 0..(M div N): K;
-% All the agents should have the same number of tickets K to handle
-constraint forall(i in 1..N)(sum([X[i,j] | j in 1..M]) = K);
+% The workload should be balanced among the agents.
+% Introducing a new variable K that represents the number of hours that each ticket handler actually works during the day
+var 0..8: K;
+% All the agents should work the same number of hours
+constraint forall(i in 1..N)(sum([X[i,j]*TT[j] | j in 1..M]) = K);
+
+% Alternative, balancing method, balancing the number of tickets handled by each agent
+% % The number of tickets handled should be balanced among the agents.
+% % Introducing a new variable K that can assume any integer value in the interval going from 0 to the result of the division of the number of tasks by the number of agents
+% var 0..(M div N): K;
+% % All the agents should have the same number of tickets K to handle
+% constraint forall(i in 1..N)(sum([X[i,j] | j in 1..M]) = K);
 
 % The solution should maximize the number of tickets solved during the day, based on their priority.
 solve maximize sum([X[i,j]*PT[j] | i in 1..N, j in 1..M]);
