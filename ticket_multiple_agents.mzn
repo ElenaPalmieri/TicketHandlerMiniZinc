@@ -25,7 +25,7 @@ var 0..8: K;
 % All the agents should work the same number of hours
 constraint forall(i in 1..N)(sum([X[i,j]*TT[j] | j in 1..M]) = K);
 
-% Alternative, balancing method, balancing the number of tickets handled by each agent
+% Alternative balancing method, balancing the number of tickets handled by each agent
 % % The number of tickets handled should be balanced among the agents.
 % % Introducing a new variable K that can assume any integer value in the interval going from 0 to the result of the division of the number of tasks by the number of agents
 % var 0..(M div N): K;
